@@ -88,11 +88,11 @@ defmodule NervesEmergeDemo do
   def button(text, on_press) do
     Input.button(
       [
-        padding(2),
+        padding(20),
         Border.rounded(6),
         Background.color(color(:slate)),
         Font.center(),
-        width(px(50)),
+        Font.size(20),
         Event.on_press(on_press),
         center_y()
       ],
