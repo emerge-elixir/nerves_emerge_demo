@@ -35,14 +35,20 @@ defmodule NervesEmergeDemo do
       [
         el(
           [
-          Animation.animate([
-          [Transform.alpha(0.01)],
-          [Transform.alpha(1.0)]
+            Animation.animate(
+              [
+                [Transform.alpha(0.01)],
+                [Transform.alpha(1.0)]
+              ],
+              50_000,
+              :ease_in
+            ),
+            center_x(),
+            center_y(),
+            padding(20),
+            Font.size(20),
+            Font.color(color(:white))
           ],
-          50_000,
-          :ease_in
-          ),
-          center_x(), center_y(), padding(20), Font.size(20), Font.color(color(:white))],
           text("Stop staring at the animations and build something :)")
         ),
         row(
