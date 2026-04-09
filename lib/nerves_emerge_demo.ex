@@ -21,9 +21,9 @@ defmodule NervesEmergeDemo do
       [
         Animation.animate(
           [
-            [Background.color(color(:gray, 950))],
-            [Background.color(color(:gray, 800))],
-            [Background.color(color(:gray, 950))]
+            [Background.gradient(color(:fuchsia, 800), color(:sky, 800))],
+            [Background.gradient(color(:lime, 800), color(:fuchsia, 950), 180)],
+            [Background.gradient(color(:fuchsia, 800), color(:sky, 800))]
           ],
           5000,
           :linear,
@@ -33,6 +33,18 @@ defmodule NervesEmergeDemo do
         height(fill())
       ],
       [
+        el(
+          [
+          Animation.animate([
+          [Transform.alpha(0.01)],
+          [Transform.alpha(1.0)]
+          ],
+          50_000,
+          :ease_in
+          ),
+          center_x(), center_y(), padding(20), Font.size(20), Font.color(color(:white))],
+          text("Stop staring at the animations and build something :)")
+        ),
         row(
           [
             center_y(),

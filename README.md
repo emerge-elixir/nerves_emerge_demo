@@ -1,32 +1,36 @@
 # Nerves Emerge Demo
 
-**TODO: Add description**
+A small demo application built with `Emerge` and `Solve` for Nerves. It renders
+a simple animated UI over DRM and wires button presses into a counter
+controller.
 
-## Targets
+## Requirements
 
-Nerves applications produce images for hardware targets based on the
-`MIX_TARGET` environment variable. If `MIX_TARGET` is unset, `mix` builds an
-image that runs on the host (e.g., your laptop). This is useful for executing
-logic tests, running utilities, and debugging. Other targets are represented by
-a short name like `rpi3` that maps to a Nerves system image for that platform.
-All of this logic is in the generated `mix.exs` and may be customized. For more
-information about targets see:
+- Elixir `~> 1.19`
+- One of the supported Nerves targets: `rpi0_2`, `rpi4`, or `rpi5`
+- At least one SSH public key in `~/.ssh`, required for target builds by
+  `config/target.exs`
 
-https://hexdocs.pm/nerves/supported-targets.html
+## Run Locally
 
-## Getting Started
+```bash
+mix deps.get
+iex -S mix
+```
 
-To start your Nerves app:
-  * `export MIX_TARGET=my_target` or prefix every command with
-    `MIX_TARGET=my_target`. For example, `MIX_TARGET=rpi3`
-  * Install dependencies with `mix deps.get`
-  * Create firmware with `mix firmware`
-  * Burn to an SD card with `mix burn`
+This starts the app on the host using the Wayland backend from
+`config/host.exs`.
 
-## WiFi Via Env
+## Build Firmware
 
-For target builds, WiFi credentials can be injected from environment variables
-when you build the firmware:
+```bash
+export MIX_TARGET=rpi5
+mix firmware
+```
+
+`rpi0_2` and `rpi4` are also supported.
+
+To bake WiFi settings into the firmware image, set them before building:
 
 ```bash
 export MIX_TARGET=rpi5
@@ -36,20 +40,49 @@ export NERVES_REGULATORY_DOMAIN="US"
 mix firmware
 ```
 
-Notes:
+`NERVES_WIFI_SSID` and `NERVES_WIFI_PSK` are read from `config/target.exs`
+during the build. `WIFI_SSID`, `WIFI_PSK`, `WIFI_COUNTRY_CODE`, and
+`WIFI_REGULATORY_DOMAIN` are also accepted as fallback names. If no PSK is set,
+the network is treated as open.
 
-  * `NERVES_WIFI_SSID` and `NERVES_WIFI_PSK` are read from `config/target.exs`
-    while building firmware.
-  * `WIFI_SSID` / `WIFI_PSK` and `WIFI_COUNTRY_CODE` / `WIFI_REGULATORY_DOMAIN`
-    are also accepted as fallback names.
-  * If `NERVES_WIFI_SSID` is set without a PSK, the network is treated as open.
-  * The selected WiFi settings are baked into the built firmware image.
+## Test
 
-## Learn more
+```bash
+mix test
+```
 
-  * Official docs: https://hexdocs.pm/nerves/getting-started.html
-  * Official website: https://nerves-project.org/
-  * Forum: https://elixirforum.com/c/nerves-forum
-  * Elixir Slack #nerves channel: https://elixir-slack.community/
-  * Elixir Discord #nerves channel: https://discord.gg/elixir
-  * Source: https://github.com/nerves-project/nerves
+## Use The App
+
+- The viewport renders an animated background and two counter rows.
+- Pressing `+` and `-` dispatches `Solve` events to the counter controller.
+- The displayed count updates from the exposed state in `NervesEmergeDemo.State`.
+
+## Project Layout
+
+`lib/nerves_emerge_demo.ex` is the viewport entrypoint. It mounts the app and
+renders the UI with `Emerge`.
+
+`lib/nerves_emerge_demo/state.ex` defines the top-level `Solve` app and wires in
+the counter controller.
+
+`lib/nerves_emerge_demo/counter_controller.ex` owns the increment and decrement
+event handlers.
+
+`lib/nerves_emerge_demo/application.ex` starts the state process and viewport
+under the supervision tree.
+
+## Notes
+
+- host mode uses the Wayland backend
+- target mode uses the DRM backend
+- `rootfs_overlay/etc/iex.exs` enables `Toolshed` in the target IEx session
+
+## References
+
+- [Emerge](https://hexdocs.pm/emerge)
+- [Solve](https://hexdocs.pm/solve)
+- [Nerves](https://hexdocs.pm/nerves/getting-started.html)
+
+## License
+
+Licensed under the Apache License, Version 2.0. See `LICENSE`.
