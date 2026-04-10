@@ -28,8 +28,8 @@ export MIX_TARGET=rpi5
 mix firmware
 ```
 
-`rpi4` is also supported, but it is not currently tested and may require a
-different `drm_card` value in `lib/nerves_emerge_demo.ex`.
+`rpi4` should also work, but it is not currently tested and may require a
+different `drm_card` value in `lib/nerves_emerge_demo.ex` and/or some changes to the nerves_system.
 
 To bake WiFi settings into the firmware image with `mise`, put them in the
 git-ignored `mise.local.toml` before building:
