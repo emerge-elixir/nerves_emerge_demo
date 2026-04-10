@@ -4,7 +4,6 @@ defmodule NervesEmergeDemo.MixProject do
   @app :nerves_emerge_demo
   @version "0.1.0"
   @all_targets [
-    :rpi0_2,
     :rpi4,
     :rpi5
   ]
@@ -58,7 +57,6 @@ defmodule NervesEmergeDemo.MixProject do
       # bumps to Nerves systems. Since these include Linux kernel and Erlang
       # version updates, please review their release notes in case
       # changes to your application are needed.
-      {:nerves_system_rpi0_2, "~> 2.0", runtime: false, targets: :rpi0_2},
       {:nerves_system_rpi4, "~> 2.0", runtime: false, targets: :rpi4},
       {:nerves_system_rpi5, "~> 2.0", runtime: false, targets: :rpi5}
     ]

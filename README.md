@@ -7,7 +7,7 @@ controller.
 ## Requirements
 
 - Elixir `~> 1.19`
-- One of the supported Nerves targets: `rpi0_2`, `rpi4`, or `rpi5`
+- One of the supported Nerves targets: `rpi4` or `rpi5`
 - At least one SSH public key in `~/.ssh`, required for target builds by
   `config/target.exs`
 
@@ -28,9 +28,26 @@ export MIX_TARGET=rpi5
 mix firmware
 ```
 
-`rpi0_2` and `rpi4` are also supported.
+`rpi4` is also supported.
 
-To bake WiFi settings into the firmware image, set them before building:
+To bake WiFi settings into the firmware image with `mise`, put them in the
+git-ignored `mise.local.toml` before building:
+
+```toml
+[env]
+NERVES_WIFI_SSID = "your-ssid"
+NERVES_WIFI_PSK = "your-passphrase"
+NERVES_REGULATORY_DOMAIN = "US"
+```
+
+Then build firmware with an explicit target:
+
+```bash
+export MIX_TARGET=rpi5
+mix firmware
+```
+
+If you are not using `mise`, you can still export the vars in your shell:
 
 ```bash
 export MIX_TARGET=rpi5
